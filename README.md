@@ -28,7 +28,8 @@
 | [06. 기술 구조](docs/06-tech-architecture.md) | 기술 스택, 시스템 구조, 데이터 모델 |
 | [07. 로드맵](docs/07-roadmap.md) | 단계별 개발 일정 |
 | [08. 리스크 & 결정할 것](docs/08-risks-and-open-questions.md) | 위험 요소와 아직 정해야 할 질문 |
-| [09. 섬 & 캐릭터 디자인](docs/09-island-and-avatar.md) | 섬 구조, 랜드마크, 학부별 동물, 학교 색상, 파일럿(성결대학교) |
+| [09. 섬 & 캐릭터 디자인](docs/09-island-and-avatar.md) | 섬 구조, 랜드마크, 학부별 동물, 학교 색상 |
+| [10. 파일럿: 성결대학교](docs/10-pilot-sungkyul.md) | 성결대 색상, 학과 → 동물 매핑, 건물 → 섬 배치, 랜드마크 후보 |
 
 ## 상태
 
