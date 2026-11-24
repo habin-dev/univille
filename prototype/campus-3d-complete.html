@@ -125,6 +125,19 @@ button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
 .field textarea{min-height:76px;border-radius:14px;border:2px solid #D5DCE6;padding:10px 12px;font-family:var(--body);font-size:14px;color:var(--ink);resize:vertical;background:#fff}
 .field textarea:focus{outline:3px solid var(--sky);border-color:var(--navy)}
 .err{margin:0;font-size:12px;color:#B3261E;min-height:16px}
+.rp-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;-webkit-overflow-scrolling:touch}.rp-tabs::-webkit-scrollbar{display:none}
+.rp-tabs .chip-btn{flex:none;min-height:38px;padding:0 12px;display:flex;align-items:center;gap:6px}
+.rp-tabs .chip-btn i,.rp-cat i{width:9px;height:9px;border-radius:50%;display:inline-block;flex:none}
+.rp-tabs .chip-btn em{font-style:normal;font-size:11px;opacity:.7}
+.rp-card{padding:11px 12px;border-radius:16px;background:#fff;border:1px solid #E3EAF2;display:flex;flex-direction:column;gap:6px}
+.rp-top{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11.5px;color:var(--muted)}
+.rp-cat{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:9px;background:#F2F6FA;color:var(--ink);font-weight:700}
+.rp-card p{margin:0;font-size:13.5px;line-height:1.5;color:var(--ink);overflow-wrap:anywhere}
+.rp-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11.5px;color:var(--muted)}
+.rp-help{min-height:36px;padding:0 12px;border-radius:18px;border:2px solid #D5DCE6;background:#fff;font-family:var(--body);font-size:12px;font-weight:700;color:var(--ink);cursor:pointer;white-space:nowrap}
+.rp-help[aria-pressed="true"]{background:#DDF3E2;border-color:#8CE0A8;color:#1F6B3A}
+.rp-empty{padding:18px 8px;text-align:center;font-size:13px;color:var(--muted)}
+.rp-count{font-size:11.5px;color:var(--muted);text-align:right}
 .rp-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
 .rp-opt{min-height:52px;border:none;border-radius:16px;background:#F2F6FA;display:flex;align-items:center;gap:8px;padding:0 12px;font-family:var(--body);font-size:13px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left}
 .rp-opt i{width:10px;height:10px;border-radius:50%;flex:none}
@@ -290,7 +303,7 @@ button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
     </div>
     <section class="g-card" aria-labelledby="gBoardsT"><h2 id="gBoardsT">즐겨찾는 게시판 <button type="button" id="gMoreBoards">더보기</button></h2><ul class="g-list" id="gBoards"></ul></section>
     <section class="g-card" aria-labelledby="gHotT"><h2 id="gHotT">HOT 게시물 <span style="font-size:11px;font-weight:500;color:var(--muted)">공감 10개 이상</span></h2><div id="gHot"></div></section>
-    <section class="g-card" aria-labelledby="gLiveT"><h2 id="gLiveT">지금 캠퍼스 <span style="font-size:11px;font-weight:500;color:var(--muted)">학생 제보 · 2시간</span></h2><div class="g-live" id="gLive"></div></section>
+    <section class="g-card" aria-labelledby="gLiveT"><h2 id="gLiveT">지금 캠퍼스 <button type="button" id="gReports">제보 게시판</button></h2><div class="g-live" id="gLive"></div></section>
     <section class="g-card" aria-labelledby="gMealT"><h2 id="gMealT">오늘 학식 <span style="font-size:11px;font-weight:500;color:var(--muted)">학생식당 · 중생관 지하 1층 · 11:00~18:30</span></h2>
       <dl class="g-meal"><dt>The bab</dt><dd>제육덮밥 · 치킨마요비빔밥 · 목살강된장비빔밥</dd><dt>Fry &amp; Rice</dt><dd>치킨치즈카레동 · 왕돈까스 · 오므라이스</dd><dt>Roll &amp; Noodles</dt><dd>계란라면 · 유부우동 · 돈까스김치찌개</dd></dl></section>
     <section class="g-card" aria-labelledby="gCalT"><h2 id="gCalT">학사일정 · 공지</h2><ul class="g-list" id="gCal"></ul></section>
@@ -1060,34 +1073,98 @@ let attended = false;
 $('attendBtn').addEventListener('click', () => { if (attended) { toast('오늘은 이미 출석했어요'); return; } attended = true; $('attendDot').hidden = true; $('attendBtn').setAttribute('aria-label', '오늘 출석 완료'); throwBricks(LM, 2, () => { addProgress(LM, 1); toast('출석 벽돌 2개가 재림관에 쌓였어요'); }); player.wave = 1.2; });
 let toastTimer;
 function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('on'), 2600); }
-/* 지금 캠퍼스 제보: pick a short status for the nearest building; it shows as a pin over the building */
-const REPORT_OPTS = {
-  cafeteria: [['#EF8465', '줄이 길어요'], ['#8CE0A8', '줄 짧아요'], ['#FFF096', '오늘 메뉴 맛있어요'], ['#ADDEF8', '자리 많아요']],
-  library: [['#8CE0A8', '열람실 자리 여유'], ['#EF8465', '자리 꽉 찼어요'], ['#ADDEF8', '조용해요'], ['#FFF096', '스터디룸 비었어요']],
-  _: [['#8CE0A8', '자리 여유 있어요'], ['#EF8465', '사람 많아요'], ['#FFF096', '행사 중이에요'], ['#ADDEF8', '조용해요']],
-};
+/* ============ 제보 게시판: any campus info as a short post, with a category; browse by category ============ */
+const RP_CATS = [
+  { k: 'seat', name: '자리·혼잡', color: '#8CE0A8', hint: '예: 학술정보관 3층 열람실 자리 여유 많아요' },
+  { k: 'meal', name: '학식', color: '#EF8465', hint: '예: The bab 줄 계단까지 있어요. Fry & Rice는 바로 받아요' },
+  { k: 'bus', name: '셔틀·교통', color: '#ADDEF8', hint: '예: 16:40 명학역 셔틀 대기 줄 짧아요' },
+  { k: 'event', name: '행사', color: '#FFF096', hint: '예: 학생회관 앞 동아리 홍보 부스 열렸어요' },
+  { k: 'lost', name: '분실물', color: '#F7B6C9', hint: '예: 중생관 201호에 검정 에어팟 케이스, 과사에 맡겼어요' },
+  { k: 'fix', name: '시설·고장', color: '#C9B8F0', hint: '예: 성결관 3층 정수기 고장났어요' },
+  { k: 'etc', name: '기타', color: '#D5DCE6', hint: '학교 안 어떤 소식이든 적어 주세요' },
+];
+const catOf = (k) => RP_CATS.find((c) => c.k === k) || RP_CATS[RP_CATS.length - 1];
+const RP_POSTS = [
+  { cat: 'meal', b: 'cafeteria', text: 'The bab 줄이 계단까지 있어요. Fry & Rice는 바로 받을 수 있어요', ago: '5분 전', help: 14 },
+  { cat: 'seat', b: 'library', text: '학술정보관 3층 열람실 자리 여유 많아요. 창가 콘센트 자리도 비어 있어요', ago: '12분 전', help: 8 },
+  { cat: 'bus', b: null, text: '16:40 명학역 셔틀 대기 줄 짧아요. 지금 가면 앉아서 가요', ago: '방금', help: 3 },
+  { cat: 'event', b: 'ginyeom', text: '기념관 대강당 종강채플 리허설 중이라 5층 복도 시끄러워요', ago: '30분 전', help: 5 },
+  { cat: 'lost', b: 'jungsaeng', text: '중생관 201호에 검정 에어팟 케이스 두고 가신 분, 1층 행정실에 맡겼어요', ago: '1시간 전', help: 9 },
+  { cat: 'fix', b: 'sungkyul', text: '성결관 3층 정수기 고장났어요. 2층 거 쓰세요', ago: '2시간 전', help: 6 },
+  { cat: 'etc', b: null, text: '정문 앞 횡단보도 신호등 공사 중이라 옆 길로 돌아가야 해요', ago: '3시간 전', help: 11 },
+];
 const reports = [];
-function nearestBuilding() { const P = player.obj.position; return buildings.filter((b) => b.stage >= 4 || b.key === 'landmark').sort((a, b) => Math.hypot(a.door.x - P.x, a.door.z - P.z) - Math.hypot(b.door.x - P.x, b.door.z - P.z))[0]; }
-function openReport() {
-  stopStack(); closePanel();
-  const b = nearestBuilding(); sheetCtx = { report: true, b, mode: 'report' };
-  $('sheetTitle').textContent = '지금 캠퍼스 제보'; $('sheetSub').textContent = `가까운 곳: ${b.name} · 2시간 뒤 사라져요`;
-  $('sheetProg').hidden = true; const ul = $('sheetList'); ul.textContent = '';
-  const li = document.createElement('li'); li.className = 'btnrow'; const grid = el('div', 'rp-opts');
-  (REPORT_OPTS[b.key] || REPORT_OPTS._).forEach(([c, txt]) => { const btn = el('button', 'rp-opt'); btn.type = 'button'; const dot = el('i'); dot.style.background = c; btn.append(dot, txt); btn.addEventListener('click', () => submitReport(b, txt, c)); grid.appendChild(btn); });
-  li.appendChild(grid); ul.appendChild(li);
-  const note = el('li'); note.append(el('span', null, '다른 학생이 "도움 됨"을 누르면'), el('span', null, '벽돌 +2')); ul.appendChild(note);
-  $('sheetGo').hidden = true; $('sheet').hidden = false;
+const bName = (k) => { const b = k && byKey(k); return b ? b.name : ''; };
+function nearestBuildings(n) { const P = player.obj.position; return buildings.slice().sort((a, b) => Math.hypot(a.door.x - P.x, a.door.z - P.z) - Math.hypot(b.door.x - P.x, b.door.z - P.z)).slice(0, n); }
+function openReports(cat = 'all') {
+  const body = openPanel('제보 게시판', '학교 안 어떤 소식이든 · 익명 · 3D 핀은 2시간 뒤 사라져요');
+  const write = el('button', 'go brick', '제보 쓰기'); write.type = 'button'; let cur = cat; write.addEventListener('click', () => openReportForm(cur === 'all' ? '' : cur)); body.appendChild(write);
+  const tabs = el('div', 'rp-tabs'); tabs.setAttribute('role', 'tablist'); tabs.setAttribute('aria-label', '카테고리');
+  const list = el('div'); list.style.cssText = 'display:flex;flex-direction:column;gap:8px';
+  const draw = (k) => {
+    cur = k;
+    [...tabs.children].forEach((t) => t.setAttribute('aria-pressed', String(t.dataset.k === k)));
+    list.textContent = '';
+    const items = RP_POSTS.filter((x) => k === 'all' || x.cat === k);
+    list.appendChild(el('div', 'rp-count', `${k === 'all' ? '전체' : catOf(k).name} ${items.length}개`));
+    if (!items.length) { list.appendChild(el('div', 'rp-empty', '아직 이 카테고리 제보가 없어요. 첫 제보를 남겨 주세요!')); return; }
+    items.forEach((x) => {
+      const c = catOf(x.cat), card = el('article', 'rp-card'), top = el('div', 'rp-top'), chip = el('span', 'rp-cat'), dot = el('i');
+      dot.style.background = c.color; chip.append(dot, c.name); top.appendChild(chip); if (x.b) top.appendChild(el('span', null, '📍 ' + bName(x.b)));
+      const foot = el('div', 'rp-foot'); foot.appendChild(el('span', null, `${x.mine ? '나' : '익명 학생'} · ${x.ago}`));
+      const help = el('button', 'rp-help'); help.type = 'button'; help.setAttribute('aria-pressed', String(!!x.helped)); help.textContent = `도움 됨 ${x.help}`;
+      if (x.mine) help.disabled = true;
+      help.addEventListener('click', () => { x.helped = !x.helped; x.help += x.helped ? 1 : -1; help.setAttribute('aria-pressed', String(x.helped)); help.textContent = `도움 됨 ${x.help}`; if (x.helped) toast('고마워요! 제보한 학생에게 벽돌 +2'); });
+      foot.appendChild(help); card.append(top, el('p', null, x.text), foot); list.appendChild(card);
+    });
+  };
+  [{ k: 'all', name: '전체', color: null }, ...RP_CATS].forEach((c) => {
+    const t = el('button', 'chip-btn'); t.type = 'button'; t.dataset.k = c.k;
+    if (c.color) { const i = el('i'); i.style.background = c.color; t.appendChild(i); }
+    t.append(c.name); const n = c.k === 'all' ? RP_POSTS.length : RP_POSTS.filter((x) => x.cat === c.k).length; t.appendChild(el('em', null, String(n)));
+    t.addEventListener('click', () => draw(c.k)); tabs.appendChild(t);
+  });
+  body.append(tabs, list); draw(cat);
+  const on = tabs.querySelector('[aria-pressed="true"]'); if (on) on.scrollIntoView({ block: 'nearest', inline: 'center' });
 }
-function submitReport(b, txt, color) {
-  closeSheet(); hop(); say(meBubble, txt, 2.4);
-  const old = reports.findIndex((r) => r.b === b); if (old >= 0) { reports[old].el.remove(); reports.splice(old, 1); }
-  const pin = el('div', 'pin'); const dot = el('i'); dot.style.background = color; pin.append(dot, txt, el('small', null, '방금')); $('labels').appendChild(pin);
-  reports.push({ b, el: pin, until: performance.now() + 90000 });
-  LIVE.unshift([color, `${b.name} ${txt}`, '방금']); if (LIVE.length > 6) LIVE.pop();
-  toast(`${b.name}에 제보했어요 · 도움 됨을 받으면 벽돌 +2`);
+function openReportForm(preCat) {
+  const body = openPanel('제보 쓰기', '익명으로 올라가요 · 특정 사람을 알아볼 수 있는 내용은 안 돼요');
+  const st = { cat: preCat || '', b: null };
+  const near = nearestBuildings(4); st.b = near[0].key;
+  const f1 = el('div', 'field'); f1.appendChild(el('span', 'lb', '카테고리 (필수)'));
+  const r1 = el('div', 'chips'); r1.setAttribute('role', 'group'); r1.setAttribute('aria-label', '카테고리');
+  const ta = document.createElement('textarea');
+  RP_CATS.forEach((c) => { const bt = el('button', 'chip-btn'); bt.type = 'button'; const i = el('i'); i.style.cssText = `width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px;background:${c.color}`; bt.append(i, c.name); bt.setAttribute('aria-pressed', String(st.cat === c.k));
+    bt.addEventListener('click', () => { st.cat = c.k; [...r1.children].forEach((x) => x.setAttribute('aria-pressed', String(x === bt))); ta.placeholder = c.hint; }); r1.appendChild(bt); });
+  f1.appendChild(r1); body.appendChild(f1);
+  const f2 = el('div', 'field'); f2.appendChild(el('span', 'lb', '장소 (3D 캠퍼스 건물 위에 핀이 떠요)'));
+  const r2 = el('div', 'chips'); r2.setAttribute('role', 'group'); r2.setAttribute('aria-label', '장소');
+  [...near.map((b) => [b.key, b.name]), [null, '장소 없음']].forEach(([k, name]) => { const bt = el('button', 'chip-btn', name); bt.type = 'button'; bt.setAttribute('aria-pressed', String(st.b === k));
+    bt.addEventListener('click', () => { st.b = k; [...r2.children].forEach((x) => x.setAttribute('aria-pressed', String(x === bt))); }); r2.appendChild(bt); });
+  f2.appendChild(r2); body.appendChild(f2);
+  const f3 = el('div', 'field'); const lb = el('label', null, '내용 (5~200자)'); lb.htmlFor = 'rpText';
+  ta.id = 'rpText'; ta.maxLength = 200; ta.placeholder = st.cat ? catOf(st.cat).hint : '학교 안 어떤 소식이든 적어 주세요';
+  f3.append(lb, ta); body.appendChild(f3);
+  const err = el('p', 'err'); err.setAttribute('role', 'alert'); body.appendChild(err); ta.addEventListener('input', () => { err.textContent = ''; }); r1.addEventListener('click', () => { err.textContent = ''; });
+  const row = el('div', 'rv-actions'); const back = el('button', 'btn2', '목록으로'); back.type = 'button'; back.addEventListener('click', () => openReports(preCat || 'all'));
+  const ok = el('button', 'go', '제보 올리기'); ok.type = 'button'; row.append(back, ok); body.appendChild(row);
+  ok.addEventListener('click', () => {
+    if (!st.cat) { err.textContent = '카테고리를 골라 주세요.'; return; }
+    const text = ta.value.trim(); if (text.length < 5) { err.textContent = '내용을 5자 이상 적어 주세요.'; ta.focus(); return; }
+    RP_POSTS.unshift({ cat: st.cat, b: st.b, text, ago: '방금', help: 0, mine: true });
+    const c = catOf(st.cat), short = text.length > 16 ? text.slice(0, 15) + '…' : text;
+    if (st.b) {
+      const b = byKey(st.b), old = reports.findIndex((r) => r.b === b); if (old >= 0) { reports[old].el.remove(); reports.splice(old, 1); }
+      const pin = el('div', 'pin'); const dot = el('i'); dot.style.background = c.color; pin.append(dot, short, el('small', null, '방금')); $('labels').appendChild(pin);
+      reports.push({ b, el: pin, until: performance.now() + 90000 });
+    }
+    LIVE.unshift([c.color, (st.b ? bName(st.b) + ' · ' : '') + short, '방금']); if (LIVE.length > 6) LIVE.pop();
+    hop(); say(meBubble, '제보 완료!', 2.2);
+    openReports(st.cat);
+    toast(`${c.name} 제보를 올렸어요 · 도움 됨을 받으면 벽돌 +2`);
+  });
 }
-$('reportBtn').addEventListener('click', openReport);
+$('reportBtn').addEventListener('click', () => openReports());
 function say(el, text, sec, talk) { el.textContent = text; el.classList.toggle('talk', !!talk); el.classList.add('on'); el._t = sec; }
 let currentAct = null;
 function doAction() { if (!currentAct) return; if (currentAct.npc) talkTo(currentAct.npc); else if (currentAct.arcade) openArcade(); else if (currentAct.statue) openStatue(); else if (currentAct.tent) openTent(currentAct.tent); else openBuilding(currentAct.key); }
@@ -1286,6 +1363,8 @@ $('gCamp').addEventListener('click', closeGlance);
 $('gNextClass').addEventListener('click', openTimetable);
 $('gShuttle').addEventListener('click', () => toast('셔틀 시간표: 학교 → 명학역 ' + SHUTTLE.fromSchool.join(', ')));
 $('gMoreBoards').addEventListener('click', () => openBoard('free'));
+$('gReports').addEventListener('click', () => openReports());
+$('gLive').addEventListener('click', () => openReports()); $('gLive').style.cursor = 'pointer';
 document.querySelectorAll('.g-q').forEach((q) => q.addEventListener('click', () => {
   const k = q.dataset.q;
   if (k === 'timetable' || k === 'review') openTimetable();
