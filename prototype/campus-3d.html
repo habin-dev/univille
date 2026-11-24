@@ -86,6 +86,44 @@ button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
 .game .stage{position:relative;width:260px;height:220px;border-radius:14px;background:#EAF4FB;overflow:hidden}
 .game p{margin:0;font-size:13px;font-weight:700}
 .blk{position:absolute;height:18px;border-radius:4px;background:#D9754B;border:2px solid #fff;box-sizing:border-box}
+.panel{position:fixed;z-index:4;left:50%;top:calc(env(safe-area-inset-top,0px) + 70px);transform:translateX(-50%);width:min(520px,calc(100% - 24px));max-height:calc(100% - 160px - env(safe-area-inset-top,0px));overflow:auto;box-sizing:border-box;padding:16px;border-radius:24px;background:var(--paper);box-shadow:0 4px 0 rgba(29,44,80,.18),0 18px 40px rgba(15,24,48,.25);display:flex;flex-direction:column;gap:12px}
+.panel h2{margin:0;font-family:var(--display);font-weight:400;font-size:24px;line-height:1.1}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.panel-head p{margin:2px 0 0;font-size:12px;color:var(--muted)}
+#panelBody{display:flex;flex-direction:column;gap:12px}
+.tt{display:grid;grid-template-columns:40px repeat(5,minmax(0,1fr));grid-template-rows:26px repeat(9,36px);gap:2px;font-size:11px}
+.tt .h{display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--muted);border-radius:8px}
+.tt .h.today{color:var(--ink);background:#E3F2FB}
+.tt .t{font-size:10px;color:var(--muted);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.15;font-variant-numeric:tabular-nums}
+.tt .c{background:#F2F6FA;border-radius:6px}
+.tt-blk{border:none;border-radius:10px;padding:4px 5px;text-align:left;font-family:var(--body);font-size:11px;font-weight:700;color:#1D2C50;cursor:pointer;display:flex;flex-direction:column;gap:2px;overflow:hidden;z-index:1;line-height:1.25}
+.tt-blk small{font-weight:500;font-size:10px;color:#33496E}
+.tt-blk.next{outline:3px solid var(--coral);outline-offset:-2px}
+.note{margin:0;font-size:12px;color:var(--muted)}
+.rv-sum{display:grid;grid-template-columns:auto minmax(0,1fr);gap:14px;align-items:center;padding:12px 14px;border-radius:16px;background:#F2F6FA}
+.rv-big{display:flex;flex-direction:column;align-items:center}
+.rv-big b{font-family:var(--display);font-weight:400;font-size:38px;line-height:1}
+.rv-big span{font-size:11px;color:var(--muted)}
+.rv-bars{display:flex;flex-direction:column;gap:6px;font-size:12px}
+.rv-bar{display:grid;grid-template-columns:auto minmax(0,1fr) auto;white-space:nowrap;gap:8px;align-items:center}
+.rv-bar i{display:block;height:7px;border-radius:4px;background:#DCE5EF;overflow:hidden}
+.rv-bar i b{display:block;height:100%;background:var(--navy)}
+.rv-bar em{font-style:normal;color:var(--muted);font-size:11px;white-space:nowrap}
+.rv-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.rv-card{padding:10px 12px;border-radius:14px;background:#fff;border:1px solid #E3EAF2;display:flex;flex-direction:column;gap:5px;font-size:13px;line-height:1.45}
+.rv-card .meta{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:var(--muted)}
+.rv-card .who{display:flex;align-items:center;gap:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip-btn{min-height:40px;padding:0 14px;border-radius:20px;border:2px solid #D5DCE6;background:#fff;font-family:var(--body);font-size:13px;font-weight:500;color:var(--ink);cursor:pointer}
+.chip-btn[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.stars{display:flex;gap:2px}
+.star{width:44px;height:44px;border:none;background:transparent;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center}
+.field{display:flex;flex-direction:column;gap:6px}
+.field .lb,.field label{font-size:12px;font-weight:700;color:var(--muted)}
+.field textarea{min-height:76px;border-radius:14px;border:2px solid #D5DCE6;padding:10px 12px;font-family:var(--body);font-size:14px;color:var(--ink);resize:vertical;background:#fff}
+.field textarea:focus{outline:3px solid var(--sky);border-color:var(--navy)}
+.err{margin:0;font-size:12px;color:#B3261E;min-height:16px}
+.btn2{min-height:46px;border:none;border-radius:23px;background:#EEF3F9;color:var(--ink);font-family:var(--body);font-weight:700;font-size:13px;cursor:pointer}
 .go{min-height:48px;border:none;border-radius:24px;background:var(--navy);color:#fff;font-family:var(--body);font-weight:700;font-size:14px;cursor:pointer}
 .go.brick{background:var(--brick);box-shadow:0 4px 0 #A9502C}
 .close{width:44px;height:44px;border:none;border-radius:22px;background:#EEF3F9;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -116,14 +154,15 @@ button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
   </div>
   <section class="card today" id="today" data-open="false" aria-label="오늘">
     <button type="button" class="today-toggle" id="todayToggle" aria-expanded="false" aria-controls="todayList">
-      <span>다음 수업 <b>14:40 웹프로그래밍</b> · 성결관</span>
+      <span id="todaySummary">다음 수업</span>
       <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D2C50" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
     </button>
     <ul id="todayList" hidden>
-      <li><span class="k">수업</span>7교시 14:40 웹프로그래밍 · 성B01 (예시)</li>
+      <li><span class="k">수업</span><span id="todayClassText"></span></li>
       <li><span class="k">셔틀</span>16:40 학교 → 명학역 · 다음 17:00</li>
       <li><span class="k">학식</span>The bab 제육덮밥 · 중생관 옆 학생식당</li>
       <li><span class="k">D-3</span>교내 1차 장학금 신청 마감 11.27</li>
+      <li><button type="button" class="btn2" id="todayTTBtn" style="width:100%">내 시간표 전체 보기</button></li>
     </ul>
   </section>
 </div>
@@ -132,6 +171,9 @@ button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
   <button type="button" class="icon-btn" id="attendBtn" aria-label="출석하고 벽돌 2개 받기">
     <svg width="24" height="18" viewBox="0 0 22 16" aria-hidden="true"><rect x="1" y="1" width="20" height="14" rx="3" fill="#D9754B" stroke="#1D2C50" stroke-width="1.6"></rect><path d="M1 8h20M11 1v7M6 8v7M16 8v7" stroke="#fff" stroke-width="1.4"></path></svg>
     <span class="dot" id="attendDot"></span>
+  </button>
+  <button type="button" class="icon-btn" id="ttBtn" aria-label="내 시간표 열기">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D2C50" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16.5" rx="3" fill="#E3F2FB"></rect><path d="M3 9.5h18M8 2.5v4M16 2.5v4M7.5 13.5h3M13.5 13.5h3M7.5 17h3"></path></svg>
   </button>
   <button type="button" class="icon-btn" id="nightBtn" aria-label="밤으로 바꾸기" aria-pressed="false">
     <svg id="sunIcon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1D2C50" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="#FFF096"></circle><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"></path></svg>
@@ -172,6 +214,13 @@ button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
   <div class="game" id="game" hidden><div class="stage" id="stackArea" aria-label="벽돌 쌓기 게임 화면"></div><p id="gameMsg" aria-live="polite"></p></div>
   <ul id="sheetList"></ul>
   <button type="button" class="go" id="sheetGo"></button>
+</section>
+<section class="panel" id="panel" hidden aria-labelledby="panelTitle">
+  <div class="panel-head">
+    <div><h2 id="panelTitle"></h2><p id="panelSub"></p></div>
+    <button type="button" class="close" id="panelClose" aria-label="닫기"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1D2C50" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>
+  </div>
+  <div id="panelBody"></div>
 </section>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <div id="fallback" hidden>이 기기에서는 3D 화면을 표시할 수 없어요. WebGL을 지원하는 브라우저에서 열어 주세요.</div>
@@ -629,7 +678,7 @@ function npcTarget(n) { for (let i = 0; i < 40; i++) { const a = rr(0, Math.PI *
 
 /* ============ input ============ */
 const keys = new Set(), MOVE = ['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
-addEventListener('keydown', (e) => { const k = e.key.toLowerCase(); const onBtn = document.activeElement && document.activeElement.tagName === 'BUTTON'; if (MOVE.includes(k)) { e.preventDefault(); keys.add(k); player.auto = null; } else if (k === ' ' && !onBtn) { e.preventDefault(); if (!e.repeat) jump(); } else if (k === 'e' && !e.repeat) doAction(); });
+addEventListener('keydown', (e) => { if (e.target && e.target.closest && e.target.closest('input,textarea,select')) return; if (e.key === 'Escape') { closePanel(); closeSheet(); return; } const k = e.key.toLowerCase(); const onBtn = document.activeElement && document.activeElement.tagName === 'BUTTON'; if (MOVE.includes(k)) { e.preventDefault(); keys.add(k); player.auto = null; } else if (k === ' ' && !onBtn) { e.preventDefault(); if (!e.repeat) jump(); } else if (k === 'e' && !e.repeat) doAction(); });
 addEventListener('keyup', (e) => keys.delete(e.key.toLowerCase()));
 addEventListener('blur', () => keys.clear());
 const joyVec = new THREE.Vector2();
@@ -714,7 +763,7 @@ function statusOf(b) { if (b.key === 'landmark') return ['build', `최종 목표
 const byKey = (k) => buildings.find((b) => b.key === k);
 let sheetCtx = null;
 function openBuilding(key) {
-  stopStack();
+  stopStack(); closePanel();
   const b = byKey(key); if (!b) return; sheetCtx = { b };
   $('sheetTitle').textContent = b.name; $('sheetSub').textContent = `${b.role} · ${b.fn}`;
   const ul = $('sheetList'); ul.textContent = '';
@@ -723,7 +772,7 @@ function openBuilding(key) {
     $('sheetProg').hidden = true;
     if (b.key === 'cafeteria') { row('The bab · 제육덮밥', '평점 4.2 (예시)'); row('Fry & Rice · 치킨치즈카레동', ''); row('Roll & Noodles · 우동치킨치즈세트', ''); }
     else if (b.key === 'hall') { row('지하 오락실', '열림 · 문 옆 뽑기 기계'); row('자유 게시판 · 동아리 홍보', ''); }
-    else if (b.key === 'sungkyul') { row('오늘 이 건물 수업 · 웹프로그래밍 성B01', '7교시 (예시)'); row('답변 기다리는 수업 질문', '3개'); }
+    else if (b.key === 'sungkyul' || b.key === 'youngam' || b.key === 'jungsaeng') { const mine = TIMETABLE.filter((c) => c.bld === b.name).sort((x, y) => x.wd - y.wd || toMin(x.start) - toMin(y.start)); if (mine.length) mine.slice(0, 4).forEach((c) => row(`${shortName(c.name)} · ${c.room}호`, `${DAYN[c.wd]} ${c.start}`)); else row('내 수업 없음', ''); row('답변 기다리는 수업 질문', '3개 (예시)'); }
     else { row('오늘 이 건물 수업', '12개 (예시)'); row('답변 기다리는 수업 질문', '2개'); }
     row('건축 참여자 명판', '186명 (예시)');
     $('sheetGo').textContent = `들어가기 · ${b.fn.split(' · ')[0]}`; $('sheetGo').className = 'go'; sheetCtx.mode = 'enter';
@@ -739,7 +788,7 @@ function openBuilding(key) {
   $('sheet').hidden = false;
 }
 function openTent(t) {
-  stopStack();
+  stopStack(); closePanel();
   sheetCtx = { tent: t };
   const b = t.target ? byKey(t.target) : null;
   $('sheetTitle').textContent = `${t.label} 천막`; $('sheetSub').textContent = b ? `임시 천막 · ${b.name} 완공 전까지 여기서 써요` : '정문 장터 · 교내 직거래';
@@ -750,7 +799,7 @@ function openTent(t) {
   $('sheet').hidden = false;
 }
 function openMenu() {
-  stopStack();
+  stopStack(); closePanel();
   sheetCtx = { menu: true };
   $('sheetTitle').textContent = '메뉴'; $('sheetSub').textContent = '우리캠 · 성결 캠퍼스'; $('sheetProg').hidden = true;
   const ul = $('sheetList'); ul.textContent = '';
@@ -769,7 +818,7 @@ function sheetRows(rows) {
 }
 function setCoins(n) { ARC.coins = n; $('coinText').textContent = fmt(n); }
 function openArcade() {
-  stopStack(); sheetCtx = { mode: 'gacha' };
+  stopStack(); closePanel(); sheetCtx = { mode: 'gacha' };
   $('sheetTitle').textContent = '학생회관 오락실'; $('sheetSub').textContent = '학생회관 완공으로 열린 숨은 공간 · 벽돌은 걸지 않아요'; $('sheetProg').hidden = true;
   sheetRows([
     { a: '보너스 벽돌 찬스', b: ARC.bonusUsed ? '오늘 사용함' : '하루 1회 · 오르기만 해요', onClick: bonusChance },
@@ -867,6 +916,134 @@ function doAction() { if (!currentAct) return; if (currentAct.npc) talkTo(curren
 $('actBtn').addEventListener('click', doAction);
 function talkTo(n) { n.talk = 3.8; n.wait = 3.8; say(n.bubble, KINDS[n.kind].line, 3.8, true); n.bubbleOn = true; n.bubbleT = 3.8; player.wave = 1.0; }
 
+
+/* ============ timetable & reviews (real 2026-2 data for one sample student) ============ */
+const TIMETABLE = /*TT*/[{"code": "90000", "sec": "001", "name": "자료구조", "kind": "전공선택", "credits": "3", "wd": 1, "p1": 7, "p2": 9, "start": "14:40", "end": "17:20", "bld": "성결관", "room": "407", "note": "컴공"}, {"code": "90001", "sec": "001", "name": "운영체제", "kind": "전공선택", "credits": "3", "wd": 0, "p1": 4, "p2": 6, "start": "11:55", "end": "14:35", "bld": "성결관", "room": "404", "note": "컴공"}, {"code": "90002", "sec": "001", "name": "알고리즘", "kind": "전공선택", "credits": "3", "wd": 1, "p1": 1, "p2": 3, "start": "09:00", "end": "11:40", "bld": "성결관", "room": "405", "note": "컴공"}, {"code": "90003", "sec": "001", "name": "컴퓨터구조", "kind": "전공선택", "credits": "3", "wd": 4, "p1": 4, "p2": 6, "start": "11:55", "end": "14:35", "bld": "성결관", "room": "405", "note": "컴공"}, {"code": "90004", "sec": "001", "name": "웹프로그래밍", "kind": "전공선택", "credits": "3", "wd": 0, "p1": 7, "p2": 9, "start": "14:40", "end": "17:20", "bld": "성결관", "room": "406", "note": "컴공"}, {"code": "90005", "sec": "001", "name": "이산수학", "kind": "전공선택", "credits": "3", "wd": 2, "p1": 7, "p2": 9, "start": "14:40", "end": "17:20", "bld": "성결관", "room": "406", "note": "컴공"}, {"code": "90099", "sec": "009", "name": "대학영어", "kind": "교양필수", "credits": "2", "wd": 3, "p1": 1, "p2": 2, "start": "09:00", "end": "10:45", "bld": "영암관", "room": "302", "note": ""}]/*TT*/;
+const TT_SOURCE = '예시 시간표 (저장소 공개본은 가상의 과목 이름을 써요)';
+const DAYN = '월화수목금토일';
+const PERIOD_T = { 1: '09:00', 2: '09:55', 3: '10:50', 4: '11:55', 5: '12:50', 6: '13:45', 7: '14:40', 8: '15:35', 9: '16:30' };
+const BLD_KEY = { '성결관': 'sungkyul', '중생관': 'jungsaeng', '영암관': 'youngam', '기념관': 'ginyeom', '재림관': 'landmark', '학술정보관': 'library', '학생회관': 'hall' };
+const COLORS = ['#ADDEF8', '#FFE7C2', '#DDF3E2', '#F7D6E0', '#E6DDF7', '#FFF3B0', '#D6ECF3'];
+const toMin = (t) => { const [h, m] = t.split(':'); return +h * 60 + +m; };
+const shortName = (n) => n.replace(/\(.*?\)/g, '').trim();
+const roomLabel = (c) => `${c.bld} ${c.room}`.trim();
+const reviewed = new Set();
+function nextClass(now) {
+  const wd = (now.getDay() + 6) % 7, cur = now.getHours() * 60 + now.getMinutes();
+  const sorted = (d) => TIMETABLE.filter((c) => c.wd === d).sort((a, b) => toMin(a.start) - toMin(b.start));
+  const later = (m) => m >= 60 ? `${Math.floor(m / 60)}시간 ${m % 60 ? (m % 60) + '분 ' : ''}뒤` : `${m}분 뒤`;
+  for (const c of sorted(wd)) if (toMin(c.end) > cur) return { c, status: toMin(c.start) <= cur ? '진행 중' : later(toMin(c.start) - cur) };
+  for (let add = 1; add <= 7; add++) { const d = (wd + add) % 7, day = sorted(d); if (day.length) return { c: day[0], status: add === 1 ? '내일' : add === 7 ? `다음 주 ${DAYN[d]}요일` : `${DAYN[d]}요일` }; }
+  return null;
+}
+const marker = new THREE.Group();
+{ const cone = add(marker, new THREE.ConeGeometry(0.55, 1.1, 24), mat('#EF8465', { emissive: '#EF8465', emissiveIntensity: 0.35 }), 0, 0, 0, { receive: false }); cone.rotation.x = Math.PI; add(marker, new THREE.TorusGeometry(0.75, 0.1, 10, 32).rotateX(Math.PI / 2), mat('#FFFFFF'), 0, 0.75, 0, { cast: false }); scene.add(marker); }
+let markerTarget = null, nextInfo = null;
+function renderToday() {
+  nextInfo = nextClass(new Date());
+  const sum = $('todaySummary'); sum.textContent = '';
+  if (!nextInfo) { sum.textContent = '이번 주 수업 없음'; $('todayClassText').textContent = '-'; markerTarget = null; return; }
+  const { c, status } = nextInfo, bName = document.createElement('b');
+  bName.textContent = `${c.start} ${shortName(c.name)}`;
+  sum.append(`다음 수업 · ${status} `, bName, ` · ${c.bld}`);
+  $('todayClassText').textContent = `${c.p1}교시 ${c.start} ${shortName(c.name)} · ${roomLabel(c)}호`;
+  markerTarget = byKey(BLD_KEY[c.bld]) || null;
+}
+function closePanel() { $('panel').hidden = true; }
+function openPanel(title, sub) { closeSheet(); $('panelTitle').textContent = title; $('panelSub').textContent = sub; const b = $('panelBody'); b.textContent = ''; $('panel').hidden = false; $('panel').scrollTop = 0; return b; }
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+function openTimetable() {
+  const body = openPanel('내 시간표', TT_SOURCE);
+  const grid = el('div', 'tt'); grid.setAttribute('role', 'grid'); grid.setAttribute('aria-label', '주간 시간표');
+  const todayWd = (new Date().getDay() + 6) % 7;
+  grid.appendChild(el('div', 'h', ''));
+  for (let d = 0; d < 5; d++) { const h = el('div', 'h' + (d === todayWd ? ' today' : ''), DAYN[d]); h.style.gridColumn = d + 2; h.style.gridRow = 1; grid.appendChild(h); }
+  for (let p = 1; p <= 9; p++) {
+    const t = el('div', 't'); t.append(el('b', null, String(p)), el('span', null, PERIOD_T[p])); t.style.gridColumn = 1; t.style.gridRow = p + 1; grid.appendChild(t);
+    for (let d = 0; d < 5; d++) { const c = el('div', 'c'); c.style.gridColumn = d + 2; c.style.gridRow = p + 1; grid.appendChild(c); }
+  }
+  TIMETABLE.forEach((c, i) => {
+    if (c.wd > 4) return;
+    const b = el('button', 'tt-blk' + (nextInfo && nextInfo.c === c ? ' next' : ''));
+    b.type = 'button'; b.style.gridColumn = c.wd + 2; b.style.gridRow = `${c.p1 + 1} / ${Math.min(c.p2, 9) + 2}`; b.style.background = COLORS[i % COLORS.length];
+    b.append(el('span', null, shortName(c.name)), el('small', null, `${c.bld.replace('관', '')} ${c.room}`));
+    b.setAttribute('aria-label', `${shortName(c.name)}, ${DAYN[c.wd]}요일 ${c.start}부터 ${c.end}까지, ${roomLabel(c)}호`);
+    b.addEventListener('click', () => openCourse(c));
+    grid.appendChild(b);
+  });
+  body.appendChild(grid);
+  const credits = [...new Set(TIMETABLE.map((c) => c.code))].reduce((s, code) => s + +TIMETABLE.find((c) => c.code === code).credits, 0);
+  const blds = {}; TIMETABLE.forEach((c) => { blds[c.bld] = (blds[c.bld] || 0) + 1; });
+  body.appendChild(el('p', 'note', `총 ${credits}학점 · ` + Object.entries(blds).map(([k, v]) => `${k} ${v}개`).join(' · ') + ' · 과목을 누르면 강의평을 볼 수 있어요'));
+  const left = [...new Set(TIMETABLE.map((c) => c.code))].filter((code) => !reviewed.has(code)).length;
+  if (left) { const btn = el('button', 'go brick', `강의평 안 쓴 과목 ${left}개 · 하나 쓰면 벽돌 +30`); btn.type = 'button'; btn.addEventListener('click', () => openReviewForm(TIMETABLE.find((c) => !reviewed.has(c.code)))); body.appendChild(btn); }
+}
+function exampleStats(c) {
+  let h = 0; for (const ch of c.code + c.name) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  const r = (k) => ((h >>> (k * 3)) % 100) / 100;
+  return { rating: (3.6 + r(1) * 1.1).toFixed(1), count: 8 + Math.floor(r(2) * 30),
+    work: [['적음', 20 + r(3) * 30], ['보통', 30 + r(4) * 30], ['많음', 10 + r(5) * 30]],
+    exam: pick2(['서술형 위주', '객관식 위주', '과제로 대체', '프로젝트 발표'], r(6)), att: pick2(['전자출결', '호명', '출석 반영 적음'], r(7)) };
+}
+function pick2(arr, f) { return arr[Math.floor(f * arr.length) % arr.length]; }
+const SAMPLE_REVIEWS = [
+  ['과제는 매주 있지만 설명이 친절해서 따라가기 괜찮아요. 시험은 수업 내용 그대로 나와요.', '2026-1 수강', 14],
+  ['실습 비중이 커요. 노트북 꼭 챙기세요. 팀플은 없어요.', '2025-2 수강', 9],
+  ['처음엔 어려운데 중간고사 이후로 감 잡히면 재밌어요. 출석 꼼꼼히 봐요.', '2025-2 수강', 6],
+];
+function openCourse(c) {
+  const st = exampleStats(c);
+  const body = openPanel(shortName(c.name), `${c.kind} · ${c.credits}학점 · ${DAYN[c.wd]} ${c.p1}-${c.p2}교시 (${c.start}~${c.end}) · ${roomLabel(c)}호`);
+  const sum = el('div', 'rv-sum');
+  const big = el('div', 'rv-big'); big.append(el('b', null, st.rating), el('span', null, `강의평 ${st.count + (reviewed.has(c.code) ? 1 : 0)}개`));
+  const bars = el('div', 'rv-bars'); const tot = st.work.reduce((s, w) => s + w[1], 0);
+  st.work.forEach(([k, v]) => { const row = el('div', 'rv-bar'); const i = el('i'); const fill = el('b'); fill.style.width = Math.round(v / tot * 100) + '%'; i.appendChild(fill); row.append(el('span', null, `과제 ${k}`), i, el('em', null, Math.round(v / tot * 100) + '%')); bars.appendChild(row); });
+  bars.appendChild(el('span', 'note', `시험 ${st.exam} · 출석 ${st.att}`));
+  sum.append(big, bars); body.appendChild(sum);
+  const acts = el('div', 'rv-actions');
+  const goB = el('button', 'btn2', `${c.bld}으로 가기`); goB.type = 'button'; goB.addEventListener('click', () => { const b = byKey(BLD_KEY[c.bld]); closePanel(); if (b) { walkTo(b.door.x, b.door.z); toast(`${c.bld} ${c.room}호로 가는 중`); } });
+  const wr = el('button', 'go brick', reviewed.has(c.code) ? '강의평 작성 완료' : '강의평 쓰기 +30'); wr.type = 'button'; wr.disabled = reviewed.has(c.code); wr.addEventListener('click', () => openReviewForm(c));
+  acts.append(goB, wr); body.appendChild(acts);
+  body.appendChild(el('p', 'note', '아래 강의평과 통계는 예시예요. 저장소 공개본의 과목 이름은 가상이에요.'));
+  SAMPLE_REVIEWS.forEach(([text, term, help]) => {
+    const card = el('div', 'rv-card'); const meta = el('div', 'meta'); const who = el('span', 'who');
+    who.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8" fill="#C9D2DD"></circle><path d="M4.5 11a7.5 6 0 0 1 15 0z" fill="#FFC93C"></path><rect x="3.5" y="10.4" width="17" height="1.8" rx=".9" fill="#E8B42A"></rect></svg>';
+    who.append('익명 학생'); meta.append(who, el('span', null, term)); card.append(meta, el('span', null, text), el('span', 'note', `도움 됨 ${help}`)); body.appendChild(card);
+  });
+}
+function openReviewForm(c) {
+  if (!c) return;
+  const body = openPanel(`강의평 쓰기 · ${shortName(c.name)}`, '수업에 대한 평가만 적어 주세요. 교수님 개인에 대한 비방은 안 돼요.');
+  const state = { rating: 0, work: '', exam: '', att: '' };
+  const f1 = el('div', 'field'); f1.appendChild(el('span', 'lb', '별점'));
+  const stars = el('div', 'stars'); stars.setAttribute('role', 'radiogroup'); stars.setAttribute('aria-label', '별점');
+  const drawStars = () => [...stars.children].forEach((b, i) => { b.setAttribute('aria-checked', String(i + 1 === state.rating)); b.innerHTML = `<svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-2.9-5.4 2.9 1.1-6-4.5-4.2 6.1-.8z" fill="${i < state.rating ? '#FFC93C' : '#E3E8EF'}" stroke="#C99A2E" stroke-width="${i < state.rating ? 1 : 0}"></path></svg>`; });
+  for (let i = 1; i <= 5; i++) { const b = el('button', 'star'); b.type = 'button'; b.setAttribute('role', 'radio'); b.setAttribute('aria-label', `${i}점`); b.addEventListener('click', () => { state.rating = i; drawStars(); }); stars.appendChild(b); }
+  drawStars(); f1.appendChild(stars); body.appendChild(f1);
+  const chipField = (label, key, opts) => { const f = el('div', 'field'); f.appendChild(el('span', 'lb', label)); const row = el('div', 'chips'); row.setAttribute('role', 'group'); row.setAttribute('aria-label', label);
+    opts.forEach((o) => { const b = el('button', 'chip-btn', o); b.type = 'button'; b.setAttribute('aria-pressed', 'false'); b.addEventListener('click', () => { state[key] = o; [...row.children].forEach((x) => x.setAttribute('aria-pressed', String(x === b))); }); row.appendChild(b); });
+    f.appendChild(row); body.appendChild(f); };
+  chipField('과제량', 'work', ['적음', '보통', '많음']);
+  chipField('시험', 'exam', ['객관식', '서술형', '과제로 대체', '없음']);
+  chipField('출석', 'att', ['전자출결', '호명', '안 함']);
+  const f5 = el('div', 'field'); const lb = el('label', null, '한 줄 평 (10자 이상)'); lb.htmlFor = 'rvText';
+  const ta = document.createElement('textarea'); ta.id = 'rvText'; ta.maxLength = 200; ta.placeholder = '예: 실습 위주라 노트북 필수, 과제는 매주 있지만 설명이 친절해요';
+  f5.append(lb, ta); body.appendChild(f5);
+  const err = el('p', 'err'); err.setAttribute('role', 'alert'); body.appendChild(err);
+  const submit = el('button', 'go brick', '등록하고 벽돌 30개 쌓기'); submit.type = 'button'; body.appendChild(submit);
+  submit.addEventListener('click', () => {
+    if (!state.rating) { err.textContent = '별점을 골라 주세요.'; return; }
+    if (ta.value.trim().length < 10) { err.textContent = '한 줄 평을 10자 이상 적어 주세요.'; ta.focus(); return; }
+    reviewed.add(c.code); closePanel(); player.wave = 1.2;
+    const lib = B.library;
+    throwBricks(lib, 5, () => { addProgress(lib, 7); toast(`강의평 등록! 벽돌 30개가 학술정보관에 쌓였어요`); });
+  });
+}
+$('ttBtn').addEventListener('click', openTimetable);
+$('todayTTBtn').addEventListener('click', openTimetable);
+$('panelClose').addEventListener('click', () => { closePanel(); canvas.focus(); });
+renderToday(); setInterval(renderToday, 30000);
+
 /* ============ lights ============ */
 const hemi = new THREE.HemisphereLight('#E4F6FF', '#C8AE7E', 1.3); scene.add(hemi);
 const sun = new THREE.DirectionalLight('#FFF0D4', 2.7); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
@@ -950,6 +1127,7 @@ function frame() {
     if (b.exc && b.exc.visible) { b.exc.userData.arm.rotation.z = 0.7 + Math.sin(t * 1.4) * 0.25; }
   });
   if (celebrate > 0) celebrate -= dt;
+  marker.visible = !!markerTarget; if (markerTarget) { const s0 = markerTarget.scale || 1, hh = markerTarget.key === 'landmark' ? 12.2 : (markerTarget.H + 3.2); marker.position.set(markerTarget.g.position.x, hh * s0 + Math.sin(t * 3) * 0.35, markerTarget.g.position.z); marker.rotation.y = t * 1.5; }
   tents.forEach((tn) => { if (tn.moving > 0) { tn.moving -= dt * 0.8; tn.g.scale.setScalar(Math.max(0.001, tn.moving)); tn.g.position.y = (1 - tn.moving) * 1.5; if (tn.moving <= 0) { tn.g.visible = false; tn.gone = true; } } });
 
   /* environment */
