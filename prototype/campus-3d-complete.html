@@ -321,7 +321,7 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 const $ = (id) => document.getElementById(id);
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const coarse = matchMedia('(pointer: coarse)').matches;
-$('hint').textContent = coarse ? '땅을 톡 누르면 걸어가요 · 건물·천막 이름표를 누르면 바로 열려요 · 두 손가락으로 회전·확대' : '땅을 클릭하면 걸어가요 · 건물·천막 이름표를 클릭하면 바로 열려요 · 드래그로 회전, 휠로 확대';
+$('hint').textContent = coarse ? '땅을 톡 누르면 걸어가요 · 건물을 누르면 바로 열려요 · 한 손가락으로 끌어서 회전, 두 손가락으로 확대' : '땅을 클릭하면 걸어가요 · 건물·천막 이름표를 클릭하면 바로 열려요 · 드래그로 회전, 휠로 확대';
 
 /* ============ renderer ============ */
 const canvas = $('scene');
@@ -341,7 +341,7 @@ scene.fog = new THREE.Fog(FOG_DAY.clone(), 55, 160);
 const camera = new THREE.PerspectiveCamera(36, 1, 0.3, 600);
 const controls = new OrbitControls(camera, canvas);
 Object.assign(controls, { enableDamping: true, dampingFactor: 0.1, enablePan: false, rotateSpeed: 0.6, zoomSpeed: 0.8, minPolarAngle: 0.45, maxPolarAngle: 1.22, minDistance: 9, maxDistance: 52 });
-controls.touches = { ONE: null, TWO: THREE.TOUCH.DOLLY_ROTATE };
+controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_ROTATE };
 
 /* ============ helpers ============ */
 let seed = 2027;
@@ -790,12 +790,16 @@ function jump() { if (player.grounded) { player.vy = 7.2; player.grounded = fals
 $('jumpBtn').addEventListener('click', jump);
 $('waveBtn').addEventListener('click', () => { player.wave = 1.6; spawnHearts(); say(meBubble, pick(['안녕!', '같이 짓자!', '성결 캠퍼스 최고', '오늘도 화이팅']), 2.2); });
 const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(); let down = null;
-canvas.addEventListener('pointerdown', (e) => { down = { x: e.clientX, y: e.clientY, t: performance.now() }; });
+canvas.addEventListener('pointerdown', (e) => { down = { x: e.clientX, y: e.clientY, t: e.timeStamp }; });
 const hideHint = () => $('hint').classList.add('off'); setTimeout(hideHint, 9000);
+/* the browser's follow-up click after a tap must not land on the sheet that just opened under the finger */
+let ghostUntil = -1;
+document.addEventListener('click', (e) => { if (e.timeStamp < ghostUntil && e.target !== canvas) { e.preventDefault(); e.stopPropagation(); } ghostUntil = -1; }, true);
 canvas.addEventListener('pointerup', (e) => {
   hideHint();
+  ghostUntil = e.timeStamp + 500;
   const slop = e.pointerType === 'mouse' ? 8 : 16;
-  if (!down || Math.hypot(e.clientX - down.x, e.clientY - down.y) > slop || performance.now() - down.t > 700) return;
+  if (!down || Math.hypot(e.clientX - down.x, e.clientY - down.y) > slop) return; /* a tap = finger barely moved (no time limit, so slow phones still register) */
   ndc.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ray.setFromCamera(ndc, camera);
   const hit = ray.intersectObjects(clickables.filter((o) => o.visible), true)[0];
   let o = null;
