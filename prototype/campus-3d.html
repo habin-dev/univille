@@ -124,6 +124,50 @@ button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
 .field textarea:focus{outline:3px solid var(--sky);border-color:var(--navy)}
 .err{margin:0;font-size:12px;color:#B3261E;min-height:16px}
 .btn2{min-height:46px;border:none;border-radius:23px;background:#EEF3F9;color:var(--ink);font-family:var(--body);font-weight:700;font-size:13px;cursor:pointer}
+.glance{position:fixed;inset:0;z-index:3;background:#F2F5F9;overflow-y:auto;-webkit-overflow-scrolling:touch;color:var(--ink);user-select:text;-webkit-user-select:text}
+.g-wrap{max-width:560px;margin:0 auto;padding:0 max(16px,env(safe-area-inset-left,0px)) calc(env(safe-area-inset-bottom,0px) + 96px);display:flex;flex-direction:column;gap:14px}
+.g-head{position:sticky;top:0;z-index:2;background:#F2F5F9;padding-top:calc(env(safe-area-inset-top,0px) + 10px);padding-bottom:8px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.g-head h1{margin:0;font-family:var(--display);font-weight:400;font-size:26px;line-height:1}
+.g-head p{margin:2px 0 0;font-size:12px;color:var(--muted)}
+.g-icons{display:flex;gap:6px}
+.g-ibtn{width:44px;height:44px;border:none;border-radius:22px;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative}
+.g-search{display:flex;align-items:center;gap:8px;min-height:46px;padding:0 14px;border-radius:23px;background:#fff;border:2px solid #E3EAF2}
+.g-search input{flex:1;min-width:0;border:none;outline:none;font-family:var(--body);font-size:14px;background:transparent;color:var(--ink)}
+.g-card{background:#fff;border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.g-card h2{margin:0;font-size:15px;font-weight:700;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.g-card h2 a,.g-card h2 button{font-size:12px;font-weight:500;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--body);padding:6px 0}
+.g-quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.g-q{min-height:72px;border:none;border-radius:16px;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;font-family:var(--body);font-size:12px;font-weight:500;color:var(--ink);cursor:pointer}
+.g-q .ic{width:34px;height:34px;border-radius:11px;display:flex;align-items:center;justify-content:center}
+.g-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.g-mini{border:none;background:#fff;border-radius:18px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;text-align:left;font-family:var(--body);color:var(--ink);cursor:pointer;min-width:0}
+.g-mini .k{font-size:12px;color:var(--muted)}
+.g-mini b{font-family:var(--display);font-weight:400;font-size:22px;line-height:1.15}
+.g-mini span:last-child{font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.g-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.g-list li+li{border-top:1px solid #EEF2F7}
+.g-row{width:100%;min-height:48px;padding:8px 2px;border:none;background:none;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;font-family:var(--body);color:var(--ink);text-align:left;cursor:pointer}
+.g-row .bn{font-size:13px;font-weight:700;white-space:nowrap}
+.g-row .tt2{font-size:13px;color:#33496E;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.g-row .tm{font-size:11px;color:var(--muted);white-space:nowrap;display:flex;align-items:center;gap:5px}
+.g-new{display:inline-block;min-width:16px;padding:0 4px;border-radius:8px;background:var(--coral);color:#fff;font-size:10px;font-weight:700;text-align:center}
+.g-hot{display:flex;flex-direction:column;gap:3px;padding:10px 0}
+.g-hot+.g-hot{border-top:1px solid #EEF2F7}
+.g-hot b{font-size:14px}.g-hot p{margin:0;font-size:13px;color:#33496E;line-height:1.45}
+.g-hot .meta{display:flex;gap:10px;font-size:11px;color:var(--muted)}
+.g-live{display:flex;flex-wrap:wrap;gap:6px}
+.g-live span{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:14px;background:#F2F6FA;font-size:12px}
+.g-live i{width:8px;height:8px;border-radius:50%;display:inline-block}
+.g-meal{display:grid;grid-template-columns:auto minmax(0,1fr);gap:6px 12px;font-size:13px}
+.g-meal dt{font-weight:700;color:var(--muted);font-size:12px;padding-top:1px}.g-meal dd{margin:0}
+.g-camp{border:none;border-radius:20px;background:var(--navy);color:#fff;padding:14px;display:flex;flex-direction:column;gap:8px;text-align:left;font-family:var(--body);cursor:pointer}
+.g-camp .bar{background:rgba(255,255,255,.2)}.g-camp .bar div{background:#FFF096}
+.g-camp small{color:#CFE3F2;font-size:12px}
+.g-tab{position:fixed;z-index:3;left:0;right:0;bottom:0;padding:6px 10px calc(env(safe-area-inset-bottom,0px) + 10px);background:#fff;box-shadow:0 -1px 0 #E3EAF2;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));max-width:560px;margin:0 auto;border-radius:22px 22px 0 0}
+.g-tab button{min-height:54px;border:none;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-family:var(--body);font-size:11px;color:var(--muted);cursor:pointer}
+.g-tab button[aria-current="page"]{color:var(--ink);font-weight:700}
+.post{padding:10px 0;display:flex;flex-direction:column;gap:3px;border-top:1px solid #EEF2F7}
+.post:first-child{border-top:none}.post b{font-size:14px}.post p{margin:0;font-size:13px;color:#33496E}.post .meta{display:flex;gap:10px;font-size:11px;color:var(--muted)}
 .go{min-height:48px;border:none;border-radius:24px;background:var(--navy);color:#fff;font-family:var(--body);font-weight:700;font-size:14px;cursor:pointer}
 .go.brick{background:var(--brick);box-shadow:0 4px 0 #A9502C}
 .close{width:44px;height:44px;border:none;border-radius:22px;background:#EEF3F9;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -138,8 +182,6 @@ button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
 }
 @media (prefers-reduced-motion:reduce){.toast,.bar div,.chev{transition:none}}
 </style>
-</head>
-<body style="margin:0">
 
 <div class="sky sky-day" aria-hidden="true"></div>
 <div class="sky sky-night" id="skyNight" aria-hidden="true"></div>
@@ -171,6 +213,9 @@ button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
   <button type="button" class="icon-btn" id="attendBtn" aria-label="출석하고 벽돌 2개 받기">
     <svg width="24" height="18" viewBox="0 0 22 16" aria-hidden="true"><rect x="1" y="1" width="20" height="14" rx="3" fill="#D9754B" stroke="#1D2C50" stroke-width="1.6"></rect><path d="M1 8h20M11 1v7M6 8v7M16 8v7" stroke="#fff" stroke-width="1.4"></path></svg>
     <span class="dot" id="attendDot"></span>
+  </button>
+  <button type="button" class="icon-btn" id="glanceBtn" aria-label="한눈에 보기 (게시판·학교 정보)">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D2C50" stroke-width="2.2" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2" fill="#FFF096"></rect><rect x="13.5" y="3.5" width="7" height="7" rx="2"></rect><rect x="3.5" y="13.5" width="7" height="7" rx="2"></rect><rect x="13.5" y="13.5" width="7" height="7" rx="2" fill="#ADDEF8"></rect></svg>
   </button>
   <button type="button" class="icon-btn" id="ttBtn" aria-label="내 시간표 열기">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D2C50" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16.5" rx="3" fill="#E3F2FB"></rect><path d="M3 9.5h18M8 2.5v4M16 2.5v4M7.5 13.5h3M13.5 13.5h3M7.5 17h3"></path></svg>
@@ -215,6 +260,45 @@ button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
   <ul id="sheetList"></ul>
   <button type="button" class="go" id="sheetGo"></button>
 </section>
+<div class="glance" id="glance" hidden>
+  <div class="g-wrap">
+    <header class="g-head">
+      <div><h1>우리캠</h1><p>성결대학교 · 한눈에 보기</p></div>
+      <div class="g-icons">
+        <button type="button" class="g-ibtn" id="gToCampus" aria-label="3D 캠퍼스로 가기"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#1D2C50" stroke-width="2.1" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18M5 20V9l7-5 7 5v11M9 20v-6h6v6"></path></svg></button>
+        <button type="button" class="g-ibtn" aria-label="알림"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D2C50" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8"></path><path d="M10 20a2 2 0 0 0 4 0"></path></svg><span style="position:absolute;top:9px;right:10px;width:8px;height:8px;border-radius:4px;background:#EF8465"></span></button>
+      </div>
+    </header>
+    <label class="g-search" for="gSearch"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#465777" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4-4"></path></svg><input id="gSearch" type="search" placeholder="게시판, 강의, 학식 검색" autocomplete="off"></label>
+    <nav class="g-quick" aria-label="바로가기"><button type="button" class="g-q" data-q="timetable"><span class="ic" style="background:#E3F2FB"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D2C50" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16.5" rx="3"></rect><path d="M3 9.5h18M8 2.5v4M16 2.5v4"></path></svg></span>시간표</button>
+<button type="button" class="g-q" data-q="review"><span class="ic" style="background:#FFF3B0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D2C50" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.4 6.8 19l1-5.8L3.5 9.2l5.9-.8z"></path></svg></span>강의평</button>
+<button type="button" class="g-q" data-q="meal"><span class="ic" style="background:#FDE4DA"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D2C50" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11h16a8 8 0 0 1-16 0zM8 3v4M12 3v4M16 3v4"></path></svg></span>학식</button>
+<button type="button" class="g-q" data-q="shuttle"><span class="ic" style="background:#DDF3E2"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D2C50" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="14" rx="3"></rect><path d="M4 10h16M8 21l1-4M16 21l-1-4"></path></svg></span>셔틀</button>
+<button type="button" class="g-q" data-q="calendar"><span class="ic" style="background:#E6DDF7"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D2C50" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16.5" rx="3"></rect><path d="M3 9.5h18M8 14h3"></path></svg></span>학사일정</button>
+<button type="button" class="g-q" data-q="market"><span class="ic" style="background:#D6ECF3"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D2C50" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h16l-1 11H5zM8 9V6a4 4 0 0 1 8 0v3"></path></svg></span>장터</button>
+<button type="button" class="g-q" data-q="notice"><span class="ic" style="background:#F7D6E0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D2C50" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10v4h3l6 4V6L7 10zM17 9a4 4 0 0 1 0 6"></path></svg></span>공지</button>
+<button type="button" class="g-q" data-q="arcade"><span class="ic" style="background:#FFE7C2"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1D2C50" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="8" width="16" height="10" rx="4"></rect><path d="M8 11v4M6 13h4M15 12h.01M17 14h.01"></path></svg></span>오락실</button></nav>
+    <div class="g-two">
+      <button type="button" class="g-mini" id="gNextClass"><span class="k">다음 수업</span><b id="gClassTime">-</b><span id="gClassText"></span></button>
+      <button type="button" class="g-mini" id="gShuttle"><span class="k">다음 셔틀 · 학교 → 명학역</span><b id="gShuttleTime">-</b><span id="gShuttleText"></span></button>
+    </div>
+    <section class="g-card" aria-labelledby="gBoardsT"><h2 id="gBoardsT">즐겨찾는 게시판 <button type="button" id="gMoreBoards">더보기</button></h2><ul class="g-list" id="gBoards"></ul></section>
+    <section class="g-card" aria-labelledby="gHotT"><h2 id="gHotT">HOT 게시물 <span style="font-size:11px;font-weight:500;color:var(--muted)">공감 10개 이상</span></h2><div id="gHot"></div></section>
+    <section class="g-card" aria-labelledby="gLiveT"><h2 id="gLiveT">지금 캠퍼스 <span style="font-size:11px;font-weight:500;color:var(--muted)">학생 제보 · 2시간</span></h2><div class="g-live" id="gLive"></div></section>
+    <section class="g-card" aria-labelledby="gMealT"><h2 id="gMealT">오늘 학식 <span style="font-size:11px;font-weight:500;color:var(--muted)">학생식당 · 중생관 지하 1층 · 11:00~18:30</span></h2>
+      <dl class="g-meal"><dt>The bab</dt><dd>제육덮밥 · 치킨마요비빔밥 · 목살강된장비빔밥</dd><dt>Fry &amp; Rice</dt><dd>치킨치즈카레동 · 왕돈까스 · 오므라이스</dd><dt>Roll &amp; Noodles</dt><dd>계란라면 · 유부우동 · 돈까스김치찌개</dd></dl></section>
+    <section class="g-card" aria-labelledby="gCalT"><h2 id="gCalT">학사일정 · 공지</h2><ul class="g-list" id="gCal"></ul></section>
+    <button type="button" class="g-camp" id="gCamp"><span style="font-family:var(--display);font-size:18px">성결 캠퍼스 짓기</span><span class="bar" aria-hidden="true" style="display:block"><div id="gCampBar"></div></span><small id="gCampText"></small></button>
+    <p class="note" style="text-align:center">게시글은 예시예요. 다음 수업·셔틀·학식·학사일정·공지 제목은 학교 공개 정보예요.</p>
+  </div>
+  <nav class="g-tab" aria-label="주요 메뉴">
+    <button type="button" aria-current="page"><svg width="22" height="22" viewBox="0 0 24 24" fill="#FFF096" stroke="#1D2C50" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"></rect><rect x="13.5" y="3.5" width="7" height="7" rx="2" fill="none"></rect><rect x="3.5" y="13.5" width="7" height="7" rx="2" fill="none"></rect><rect x="13.5" y="13.5" width="7" height="7" rx="2" fill="#ADDEF8"></rect></svg>한눈에</button>
+    <button type="button" data-tab="campus"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#465777" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 20h18M5 20V9l7-5 7 5v11M9 20v-6h6v6"></path></svg>3D 캠퍼스</button>
+    <button type="button" data-tab="timetable"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#465777" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="3"></rect><path d="M3 9h18M8 2v4M16 2v4"></path></svg>시간표</button>
+    <button type="button" data-tab="boards"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#465777" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="3" width="16" height="18" rx="3"></rect><path d="M8 8h8M8 12h8M8 16h5"></path></svg>게시판</button>
+    <button type="button" data-tab="me"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#465777" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c1-4 4-6 8-6s7 2 8 6"></path></svg>나</button>
+  </nav>
+</div>
 <section class="panel" id="panel" hidden aria-labelledby="panelTitle">
   <div class="panel-head">
     <div><h2 id="panelTitle"></h2><p id="panelSub"></p></div>
@@ -1004,7 +1088,7 @@ function openCourse(c) {
   const goB = el('button', 'btn2', `${c.bld}으로 가기`); goB.type = 'button'; goB.addEventListener('click', () => { const b = byKey(BLD_KEY[c.bld]); closePanel(); if (b) { walkTo(b.door.x, b.door.z); toast(`${c.bld} ${c.room}호로 가는 중`); } });
   const wr = el('button', 'go brick', reviewed.has(c.code) ? '강의평 작성 완료' : '강의평 쓰기 +30'); wr.type = 'button'; wr.disabled = reviewed.has(c.code); wr.addEventListener('click', () => openReviewForm(c));
   acts.append(goB, wr); body.appendChild(acts);
-  body.appendChild(el('p', 'note', '아래 강의평과 통계는 예시예요. 저장소 공개본의 과목 이름은 가상이에요.'));
+  body.appendChild(el('p', 'note', '아래 강의평과 통계는 예시예요. 과목·시간·강의실은 공개 강의시간표 실제 정보예요.'));
   SAMPLE_REVIEWS.forEach(([text, term, help]) => {
     const card = el('div', 'rv-card'); const meta = el('div', 'meta'); const who = el('span', 'who');
     who.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8" fill="#C9D2DD"></circle><path d="M4.5 11a7.5 6 0 0 1 15 0z" fill="#FFC93C"></path><rect x="3.5" y="10.4" width="17" height="1.8" rx=".9" fill="#E8B42A"></rect></svg>';
@@ -1044,6 +1128,71 @@ $('todayTTBtn').addEventListener('click', openTimetable);
 $('panelClose').addEventListener('click', () => { closePanel(); canvas.focus(); });
 renderToday(); setInterval(renderToday, 30000);
 
+
+/* ============ "한눈에" 2D home (에타-style overview) ============ */
+const SHUTTLE = { toSchool: ['08:00', '08:20', '08:40', '09:00', '10:20', '10:40', '11:00', '11:20', '11:40', '13:40', '14:00', '14:20', '16:50', '17:10', '17:30', '17:50'], fromSchool: ['13:50', '14:10', '16:40', '17:00', '17:20', '17:40'] };
+const BOARDS = [
+  { key: 'free', name: '자유게시판', fresh: 12, posts: [['종강채플 좌석 일찍 가야 하나요?', '대강당 2층도 열리나요', 18, 7], ['성결관 B01 에어컨 고쳐졌나요', '오늘 실습 때 너무 더웠어요', 9, 3], ['명학역 셔틀 줄 꿀팁', '16:40 차는 10분 전에 가야 탈 수 있어요', 21, 15], ['중생관 매점 신상 나왔어요', '', 4, 2]] },
+  { key: 'info', name: '정보게시판', fresh: 5, posts: [['동계계절학기 과목 정리', '개설 안내 공지 보고 표로 만들었어요', 31, 44], ['장학금 1차 신청 서류 체크리스트', '11.27 마감이에요', 12, 26]] },
+  { key: 'qna', name: '질문 & 답변', fresh: 3, posts: [['알고리즘 기말 범위 어디까지예요?', '답변 채택하면 벽돌 +25', 6, 2], ['컴퓨터구조 과제 제출 형식 아시는 분', '', 3, 1]] },
+  { key: 'dept', name: '컴퓨터공학과', fresh: 2, posts: [['캡스톤 팀원 구해요 (프론트 1명)', '', 7, 4], ['과방 프린터 토너 교체했어요', '', 2, 6]] },
+  { key: 'worry', name: '고민 게시판', fresh: 4, posts: [['휴학 고민 들어주실 분', '항상 익명이에요', 16, 22], ['실습 나가기 전에 너무 떨려요', '', 11, 19]] },
+  { key: 'market', name: '장터', fresh: 6, posts: [['경영학원론 전공책 팝니다', '교내 직거래 · 8,000원', 3, 1], ['자취방 미니 냉장고 나눔', '중생관 앞에서 드려요', 8, 5]] },
+];
+const HOT = [['명학역 셔틀 줄 꿀팁', '16:40 차는 10분 전에 가야 탈 수 있어요. 금요일은 더 일찍!', '자유게시판', 15, 21], ['동계계절학기 과목 정리', '개설 안내 공지 보고 학과별로 표 만들었어요', '정보게시판', 44, 31], ['휴학 고민 들어주실 분', '선배님들 휴학하고 뭐 하셨어요?', '고민 게시판', 22, 16]];
+const LIVE = [['#8CE0A8', '학술정보관 3층 자리 여유', '12분 전'], ['#EF8465', '학생식당 줄 김 (The bab)', '5분 전'], ['#ADDEF8', '셔틀 16:40 대기 줄 짧아요', '방금'], ['#FFF096', '기념관 대강당 리허설 중', '30분 전']];
+const CAL = [['학사', '종강채플 (기념관 대강당)', '11.25~26'], ['장학', '2027-1학기 교내 1차 장학금 신청 마감', '11.27'], ['공지', '2026학년도 동계 계절학기 과목 개설 안내', '11.13'], ['공지', '2026학년도 동계 계절학기 안내', '10.06']];
+function renderGlance() {
+  const n = nextClass(new Date());
+  if (n) { $('gClassTime').textContent = n.c.start; $('gClassText').textContent = `${shortName(n.c.name)} · ${roomLabel(n.c)}호 · ${n.status}`; }
+  const now = new Date(), cur = now.getHours() * 60 + now.getMinutes();
+  const nx = SHUTTLE.fromSchool.find((t) => toMin(t) > cur);
+  $('gShuttleTime').textContent = nx || SHUTTLE.fromSchool[0];
+  $('gShuttleText').textContent = nx ? `${((d) => d >= 60 ? `${Math.floor(d / 60)}시간 ${d % 60}분` : `${d}분`)(toMin(nx) - cur)} 뒤 · 다음 ${SHUTTLE.fromSchool[SHUTTLE.fromSchool.indexOf(nx) + 1] || '없음'}` : '오늘 운행 끝 · 내일 첫차';
+  const bl = $('gBoards'); bl.textContent = '';
+  BOARDS.forEach((b) => { const li = el('li'); const btn = el('button', 'g-row'); btn.type = 'button';
+    const tm = el('span', 'tm'); tm.append(`${b.posts[0][2]}`); const nw = el('span', 'g-new', 'N'); nw.setAttribute('aria-label', `새 글 ${b.fresh}개`); tm.prepend(nw);
+    btn.append(el('span', 'bn', b.name), el('span', 'tt2', b.posts[0][0]), tm); btn.addEventListener('click', () => openBoard(b.key)); li.appendChild(btn); bl.appendChild(li); });
+  const hot = $('gHot'); hot.textContent = '';
+  HOT.forEach(([t, body, board, likes, cm]) => { const d = el('div', 'g-hot'); const meta = el('div', 'meta'); meta.append(el('span', null, board), el('span', null, `공감 ${likes}`), el('span', null, `댓글 ${cm}`)); d.append(el('b', null, t), el('p', null, body), meta); hot.appendChild(d); });
+  const live = $('gLive'); live.textContent = '';
+  LIVE.forEach(([c, t, ago]) => { const sp = el('span'); const i = el('i'); i.style.background = c; sp.append(i, `${t} · ${ago}`); live.appendChild(sp); });
+  const cal = $('gCal'); cal.textContent = '';
+  CAL.forEach(([k, t, d]) => { const li = el('li'); const row = el('div', 'g-row'); row.style.cursor = 'default'; row.append(el('span', 'bn', k), el('span', 'tt2', t), el('span', 'tm', d)); li.appendChild(row); cal.appendChild(li); });
+  const pct = campusPct(); $('gCampBar').style.width = pct + '%';
+  const nextB = buildings.filter((b) => b.stage < 4 && b.key !== 'landmark').sort((a, b) => b.progress - a.progress)[0];
+  $('gCampText').textContent = `완성도 ${pct}% · ` + (nextB ? `${nextB.name} 완공까지 ${100 - Math.round(nextB.progress)}%` : '모든 건물 완공!') + ' · 너구리 건축팀 2위 · 3D로 보기';
+  const arc = document.querySelector('.g-q[data-q="arcade"]'); if (arc) arc.hidden = !(typeof ARC !== 'undefined' && ARC.machine && ARC.machine.visible);
+}
+function openGlance() { closePanel(); closeSheet(); renderGlance(); $('glance').hidden = false; $('glance').scrollTop = 0; }
+function closeGlance() { $('glance').hidden = true; canvas.focus(); }
+function openBoard(key) {
+  const b = BOARDS.find((x) => x.key === key) || BOARDS[0];
+  const body = openPanel(b.name, key === 'worry' ? '항상 익명 · 학과 동물도 보이지 않아요' : '익명 · 새 글 ' + b.fresh + '개');
+  b.posts.forEach(([t, d, cm, likes], i) => { const post = el('div', 'post'); const meta = el('div', 'meta'); meta.append(el('span', null, '익명 학생'), el('span', null, `${(i + 1) * 7}분 전`), el('span', null, `공감 ${likes}`), el('span', null, `댓글 ${cm}`)); post.append(el('b', null, t)); if (d) post.appendChild(el('p', null, d)); post.appendChild(meta); body.appendChild(post); });
+  const w = el('button', 'go', '글쓰기'); w.type = 'button'; w.addEventListener('click', () => toast('목업이라 아직 글을 쓸 수 없어요')); body.appendChild(w);
+}
+$('glanceBtn').addEventListener('click', openGlance);
+$('gToCampus').addEventListener('click', closeGlance);
+$('gCamp').addEventListener('click', closeGlance);
+$('gNextClass').addEventListener('click', openTimetable);
+$('gShuttle').addEventListener('click', () => toast('셔틀 시간표: 학교 → 명학역 ' + SHUTTLE.fromSchool.join(', ')));
+$('gMoreBoards').addEventListener('click', () => openBoard('free'));
+document.querySelectorAll('.g-q').forEach((q) => q.addEventListener('click', () => {
+  const k = q.dataset.q;
+  if (k === 'timetable' || k === 'review') openTimetable();
+  else if (k === 'market') openBoard('market');
+  else if (k === 'arcade') { closeGlance(); openArcade(); }
+  else if (k === 'shuttle') $('gShuttle').click();
+  else if (k === 'meal') document.getElementById('gMealT').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+  else document.getElementById('gCalT').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+}));
+document.querySelectorAll('.g-tab button[data-tab]').forEach((t) => t.addEventListener('click', () => {
+  const k = t.dataset.tab;
+  if (k === 'campus') closeGlance(); else if (k === 'timetable') openTimetable(); else if (k === 'boards') openBoard('free'); else toast('내 정보 화면은 준비 중이에요');
+}));
+$('gSearch').addEventListener('keydown', (e) => { if (e.key === 'Enter') toast(`'${e.target.value}' 검색은 준비 중이에요`); });
+
 /* ============ lights ============ */
 const hemi = new THREE.HemisphereLight('#E4F6FF', '#C8AE7E', 1.3); scene.add(hemi);
 const sun = new THREE.DirectionalLight('#FFF0D4', 2.7); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
@@ -1066,6 +1215,7 @@ function faceTo(o, dx, dz, dt, rate) { const want = Math.atan2(dx, dz); o.rotati
 function tryMove(P, dx, dz) { prev.copy(P.position); for (const [ax, az] of [[dx, dz], [dx, 0], [0, dz]]) { P.position.copy(prev); P.position.x += ax; P.position.z += az; resolve(P.position, 0.45); if (walkable(P.position.x, P.position.z)) return true; } P.position.copy(prev); return false; }
 function frame() {
   const dt = Math.min(clock.getDelta(), 0.05), t = clock.elapsedTime;
+  if (!$('glance').hidden) { requestAnimationFrame(frame); return; }
   nightT += ((night ? 1 : 0) - nightT) * Math.min(1, dt * 2.2);
   $('skyNight').style.opacity = nightT.toFixed(3);
   hemi.intensity = 1.3 - 0.85 * nightT; hemi.color.copy(HS_DAY).lerp(HS_NIGHT, nightT); hemi.groundColor.copy(HG_DAY).lerp(HG_NIGHT, nightT);
