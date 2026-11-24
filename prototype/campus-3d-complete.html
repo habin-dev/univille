@@ -814,7 +814,6 @@ function nearTap(cx, cy, R) {
   const q = new THREE.Vector3();
   const test = (obj, y) => { obj.getWorldPosition(q); q.y += y; q.project(camera); if (q.z > 1 || Math.abs(q.x) > 1 || Math.abs(q.y) > 1) return; const x = (q.x * 0.5 + 0.5) * innerWidth, sy = (-q.y * 0.5 + 0.5) * innerHeight; const d = Math.hypot(x - cx, sy - cy); if (d < bestD) { bestD = d; best = obj; } };
   labelDefs.forEach((d) => { if (d.arcade || (d.tent && d.tent.gone) || (!d.tent && !d.b && !d.statue)) return; const h = d.statue ? 2.6 : d.tent ? 1.2 : d.key === 'landmark' ? 5 : (d.b.H || 6) * 0.45 * (d.b.scale || 1); test(d.obj, h); });
-  npcs.forEach((n) => test(n.obj, 1.0));
   return best;
 }
 function pickObject(o) {
@@ -1289,6 +1288,15 @@ const clock = new THREE.Clock(), mS = reduceMotion ? 0.4 : 1;
 let blinkT = 2, dustT = 0;
 function stepAnimal(o, moving, t, phase) { const u = o.userData, ph = t * 11 + phase; u.bob.position.y = moving ? Math.abs(Math.sin(ph)) * 0.1 : Math.sin(t * 2.2 + phase) * 0.018; u.bob.rotation.z = moving ? Math.sin(ph) * 0.07 : 0; u.legs[0].rotation.x = moving ? Math.sin(ph) * 0.7 : 0; u.legs[1].rotation.x = moving ? -Math.sin(ph) * 0.7 : 0; u.arms[0].rotation.x = moving ? -Math.sin(ph) * 0.6 : 0; u.arms[1].rotation.x = moving ? Math.sin(ph) * 0.6 : 0; u.head.rotation.z = Math.sin(t * 1.6 + phase) * 0.05; }
 function faceTo(o, dx, dz, dt, rate) { const want = Math.atan2(dx, dz); o.rotation.y += Math.atan2(Math.sin(want - o.rotation.y), Math.cos(want - o.rotation.y)) * Math.min(1, dt * rate); }
+function setGhost(n, target, dt) {
+  if (n.alpha === undefined) { n.alpha = 1; n.mats = []; n.meshes = []; n.obj.traverse((m) => { if (!m.isMesh) return; if (m.material === SHADOW_MAT) { m.material = SHADOW_MAT.clone(); n.shadowMat = m.material; return; } m.material = m.material.clone(); n.mats.push(m.material); n.meshes.push(m); }); }
+  if (Math.abs(n.alpha - target) < 0.005) return;
+  n.alpha += (target - n.alpha) * (1 - Math.exp(-dt * 14)); if (Math.abs(n.alpha - target) < 0.01) n.alpha = target;
+  const see = n.alpha < 0.99;
+  n.mats.forEach((m) => { m.transparent = see; m.opacity = n.alpha; m.depthWrite = !see; });
+  n.meshes.forEach((m) => { m.castShadow = !see; });
+  if (n.shadowMat) n.shadowMat.opacity = SHADOW_MAT.opacity * n.alpha;
+}
 function tryMove(P, dx, dz) { prev.copy(P.position); for (const [ax, az] of [[dx, dz], [dx, 0], [0, dz]]) { P.position.copy(prev); P.position.x += ax; P.position.z += az; resolve(P.position, 0.45); if (walkable(P.position.x, P.position.z)) return true; } P.position.copy(prev); return false; }
 function frame() {
   const dt = Math.min(clock.getDelta(), 0.05), t = clock.elapsedTime;
@@ -1334,7 +1342,10 @@ function frame() {
     const o = n.obj; let mvg = false;
     if (n.talk > 0) { n.talk -= dt; faceTo(o, P.position.x - o.position.x, P.position.z - o.position.z, dt, 6); }
     else { v3.copy(n.target).sub(o.position); v3.y = 0; const d = v3.length(); if (n.wait > 0) n.wait -= dt; else if (d > 0.15) { mvg = true; v3.normalize(); const step = Math.min(d, n.speed * dt * mS); o.position.x += v3.x * step; o.position.z += v3.z * step; resolve(o.position, 0.4); faceTo(o, v3.x, v3.z, dt, 7); } else { n.wait = rr(1.5, 5); npcTarget(n); }
-      const dp = Math.hypot(o.position.x - P.position.x, o.position.z - P.position.z); if (dp < 1.1 && dp > 1e-3) { o.position.x += (o.position.x - P.position.x) / dp * (1.1 - dp); o.position.z += (o.position.z - P.position.z) / dp * (1.1 - dp); } }
+    }
+    /* characters never block each other: when the player overlaps someone, that character turns see-through */
+    const dp = Math.hypot(o.position.x - P.position.x, o.position.z - P.position.z);
+    setGhost(n, dp < 1.25 ? 0.38 : 1, dt);
     stepAnimal(o, mvg, t, n.phase);
     n.bubbleT -= dt; if (n.bubbleT <= 0) { if (n.bubbleOn) { n.bubble.classList.remove('on'); n.bubbleOn = false; n.bubbleT = rr(8, 18); } else { say(n.bubble, pick(randomLines), 3); n.bubbleOn = true; n.bubbleT = 3; } }
   });
