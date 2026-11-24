@@ -1,0 +1,4 @@
+# school data and generated outputs stay local
+tools/timetable/data/
+*.pdf
+__pycache__/
