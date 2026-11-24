@@ -50,6 +50,7 @@
 ## 프로토타입
 
 - [`prototype/campus-3d.html`](prototype/campus-3d.html): **성결 캠퍼스 3D 프로토타입**. 내 학과 동물로 걸어 다니고, 공사 현장에서 벽돌을 쌓아 건물을 완공하면 정문 임시 천막이 건물로 이사한다. 브라우저로 열면 바로 해볼 수 있다 (인터넷 연결 필요).
+- [`prototype/campus-3d-complete.html`](prototype/campus-3d-complete.html): **완공 미리보기**. 모든 건물과 재림관이 완공된 성결 캠퍼스, 완공 축제(가랜드, 불꽃놀이, 1위 학과 황금 동상).
 - [`prototype/island-3d-legacy.html`](prototype/island-3d-legacy.html): **이전 섬 컨셉**의 3D 프로토타입. 캐릭터 조작, 동물 디자인, 재림관 모델, 단계별 연출은 캠퍼스 짓기에서도 참고용으로 쓴다.
 
 ## 상태
