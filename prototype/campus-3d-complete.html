@@ -766,6 +766,8 @@ spawnPlayer('raccoon');
   statue.traverse((o) => { if (o.isMesh && o.material !== SHADOW_MAT) o.material = GOLD; if (o.material === SHADOW_MAT) o.visible = false; });
   ped.add(statue); world.add(ped); circles.push([-4.8, -6.2, 1.2]);
   labelDefs.push({ obj: ped, y: 5.2, statue: true });
+  ped.userData.statue = true; clickables.push(ped);
+  interactables.push({ statue: true, x: -4.8, z: -4.5, r: 2.6 });
 }
 const meTag = document.createElement('div'); meTag.className = 'metag'; $('labels').appendChild(meTag);
 const updateMeTag = () => { meTag.textContent = '나 · 총괄 건축가 · ' + KINDS[playerKind].dept; }; updateMeTag();
@@ -797,7 +799,7 @@ canvas.addEventListener('pointerup', (e) => {
   ndc.set((e.clientX / innerWidth) * 2 - 1, -(e.clientY / innerHeight) * 2 + 1); ray.setFromCamera(ndc, camera);
   const hit = ray.intersectObjects(clickables.filter((o) => o.visible), true)[0];
   let o = null;
-  if (hit) { o = hit.object; while (o && !o.userData.key && !o.userData.npc && !o.userData.tent) o = o.parent; }
+  if (hit) { o = hit.object; while (o && !o.userData.key && !o.userData.npc && !o.userData.tent && !o.userData.statue) o = o.parent; }
   if (!o) o = nearTap(e.clientX, e.clientY, e.pointerType === 'mouse' ? 26 : 48);
   if (o) { pickObject(o); return; }
   const g = ray.intersectObject(ground)[0]; if (g) { closeSheet(); walkTo(g.point.x, g.point.z); }
@@ -807,18 +809,29 @@ function nearTap(cx, cy, R) {
   let best = null, bestD = R;
   const q = new THREE.Vector3();
   const test = (obj, y) => { obj.getWorldPosition(q); q.y += y; q.project(camera); if (q.z > 1 || Math.abs(q.x) > 1 || Math.abs(q.y) > 1) return; const x = (q.x * 0.5 + 0.5) * innerWidth, sy = (-q.y * 0.5 + 0.5) * innerHeight; const d = Math.hypot(x - cx, sy - cy); if (d < bestD) { bestD = d; best = obj; } };
-  labelDefs.forEach((d) => { if (d.arcade || (d.tent && d.tent.gone) || (!d.tent && !d.b)) return; const h = d.tent ? 1.2 : d.key === 'landmark' ? 5 : (d.b.H || 6) * 0.45 * (d.b.scale || 1); test(d.obj, h); });
+  labelDefs.forEach((d) => { if (d.arcade || (d.tent && d.tent.gone) || (!d.tent && !d.b && !d.statue)) return; const h = d.statue ? 2.6 : d.tent ? 1.2 : d.key === 'landmark' ? 5 : (d.b.H || 6) * 0.45 * (d.b.scale || 1); test(d.obj, h); });
   npcs.forEach((n) => test(n.obj, 1.0));
   return best;
 }
 function pickObject(o) {
   if (o.userData.npc) { closeSheet(); walkTo(o.position.x, o.position.z, o.userData.npc); return; }
+  if (o.userData.statue) { pickStatue(); return; }
   if (o.userData.tent) { pickTent(o.userData.tent); return; }
   if (o.userData.key) pickBuilding(o.userData.key);
 }
 function popLabel(match) { const i = labelDefs.findIndex(match); if (i < 0) return; const el = labelEls[i]; el.classList.remove('pick'); void el.offsetWidth; el.classList.add('pick'); }
 /* open right away, and the character heads there at the same time */
 function pickBuilding(k) { popLabel((d) => d.key === k && !d.tent); approach(interactables.find((it) => it.key === k && !it.tent), () => openBuilding(k)); }
+function pickStatue() { popLabel((d) => d.statue); approach(interactables.find((it) => it.statue), openStatue); }
+function openStatue() {
+  stopStack(); closePanel();
+  sheetCtx = { statue: true, mode: 'menu' };
+  $('sheetTitle').textContent = '황금 비버 동상'; $('sheetSub').textContent = '이번 주 학과 건축팀 1위 · 비버 팀 (산업경영·도시디자인)';
+  $('sheetProg').hidden = true; const ul = $('sheetList'); ul.textContent = '';
+  [['🥇 비버 팀', '벽돌 1,240'], ['🥈 너구리 팀 (우리 팀)', '벽돌 1,105'], ['🥉 고양이 팀', '벽돌 960'], ['1위와 차이', '벽돌 135개'], ['다음 동상 교체', '월요일 0시']].forEach(([a, c]) => { const li = document.createElement('li'); const s1 = document.createElement('span'); s1.textContent = a; const s2 = document.createElement('span'); s2.textContent = c; li.append(s1, s2); ul.appendChild(li); });
+  $('sheetGo').textContent = '학과 건축팀 전체 순위 보기'; $('sheetGo').className = 'go';
+  $('sheet').hidden = false;
+}
 function pickTent(t) { popLabel((d) => d.tent === t); approach(interactables.find((it) => it.tent === t), () => openTent(t)); }
 const rippleMesh = add(scene, new THREE.RingGeometry(0.35, 0.5, 32).rotateX(-Math.PI / 2), new THREE.MeshBasicMaterial({ color: '#FFFFFF', transparent: true, opacity: 0, depthWrite: false }), 0, 0.06, 0, { cast: false, receive: false });
 let rippleT = 0;
@@ -881,7 +894,7 @@ const labelEls = labelDefs.map((d) => {
   const b = document.createElement('button'); b.type = 'button'; b.className = 'blabel' + (d.small ? ' small' : '');
   const t1 = document.createElement('b'), t2 = document.createElement('span');
   if (d.arcade) { t1.textContent = '오락실'; t2.className = 'st build'; t2.textContent = '숨은 공간'; b.append(t1, t2); b.addEventListener('click', openArcade); $('labels').appendChild(b); return b; }
-  if (d.statue) { t1.textContent = '이번 주 1위'; t2.className = 'st done'; t2.textContent = '비버 건축팀'; b.append(t1, t2); b.addEventListener('click', openMenu); }
+  if (d.statue) { t1.textContent = '이번 주 1위'; t2.className = 'st done'; t2.textContent = '비버 건축팀'; b.append(t1, t2); b.addEventListener('click', pickStatue); }
   else if (d.tent) { t1.textContent = d.tent.label; t2.className = 'st tent'; t2.textContent = d.tent.target ? '임시 천막' : '정문 장터'; b.append(t1, t2); b.addEventListener('click', () => pickTent(d.tent)); }
   else { t1.textContent = d.b.name; t2.className = 'st'; b.append(t1, t2); b.addEventListener('click', () => pickBuilding(d.key)); d.st = t2; }
   $('labels').appendChild(b); return b;
@@ -1020,6 +1033,7 @@ $('sheetClose').addEventListener('click', () => { closeSheet(); canvas.focus(); 
 $('menuBtn').addEventListener('click', openMenu);
 $('sheetGo').addEventListener('click', () => {
   if (!sheetCtx) return;
+  if (sheetCtx.statue) { openMenu(); return; }
   if (sheetCtx.mode === 'gacha') { gacha(); return; }
   if (sheetCtx.mode === 'stack') { dropStack(); return; }
   if (sheetCtx.mode === 'stackAgain') { startStack(); return; }
@@ -1040,7 +1054,7 @@ let toastTimer;
 function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('on'), 2600); }
 function say(el, text, sec, talk) { el.textContent = text; el.classList.toggle('talk', !!talk); el.classList.add('on'); el._t = sec; }
 let currentAct = null;
-function doAction() { if (!currentAct) return; if (currentAct.npc) talkTo(currentAct.npc); else if (currentAct.arcade) openArcade(); else if (currentAct.tent) openTent(currentAct.tent); else openBuilding(currentAct.key); }
+function doAction() { if (!currentAct) return; if (currentAct.npc) talkTo(currentAct.npc); else if (currentAct.arcade) openArcade(); else if (currentAct.statue) openStatue(); else if (currentAct.tent) openTent(currentAct.tent); else openBuilding(currentAct.key); }
 $('actBtn').addEventListener('click', doAction);
 function talkTo(n) { n.talk = 3.8; n.wait = 3.8; say(n.bubble, KINDS[n.kind].line, 3.8, true); n.bubbleOn = true; n.bubbleT = 3.8; player.wave = 1.0; }
 
@@ -1307,7 +1321,7 @@ function frame() {
   for (const it of interactables) { const d = Math.hypot(it.x - P.position.x, it.z - P.position.z); if (d < it.r && d < bestD) { best = it; bestD = d; } }
   for (const n of npcs) { const d = n.obj.position.distanceTo(P.position); if (d < 2.4 && d < bestD) { best = { npc: n }; bestD = d; } }
   let label = '';
-  if (best) { if (best.npc) label = `말 걸기 · ${KINDS[best.npc.kind].name}`; else if (best.arcade) label = '오락실 · 학생회관 지하'; else if (best.tent) label = `${best.tent.label} 천막`; else { const b = best.b; label = b.stage >= 4 ? `들어가기 · ${b.name}` : `공사 현장 · ${b.name}`; } }
+  if (best) { if (best.npc) label = `말 걸기 · ${KINDS[best.npc.kind].name}`; else if (best.arcade) label = '오락실 · 학생회관 지하'; else if (best.statue) label = '황금 비버 동상 · 이번 주 1위'; else if (best.tent) label = `${best.tent.label} 천막`; else { const b = best.b; label = b.stage >= 4 ? `들어가기 · ${b.name}` : `공사 현장 · ${b.name}`; } }
   if (label !== (currentAct ? currentAct._label : '')) { $('actBtn').hidden = !best; $('actText').textContent = label; }
   currentAct = best; if (best) best._label = label;
 
