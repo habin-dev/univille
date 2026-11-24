@@ -34,6 +34,7 @@ OSM 부지 폴리곤 + 건물 폴리곤 (모양, 층수 태그)
 ```
 
 - OSM 데이터 품질은 학교마다 다르다. 건물이 빠졌거나 층수가 없으면 운영 도구에서 보완한다.
+- OSM에 없는 건물(예: 분리한 학생식당)은 `near`로 위치만 지정하고 운영 도구에서 배치한다.
 - 공사 단계 표현: 완성 건물 모델을 **아래부터 잘라서 보여주는 방식**(클리핑) + 비계·크레인 소품. 단계마다 모델을 따로 만들 필요가 없다.
 
 ```json
@@ -44,7 +45,9 @@ OSM 부지 폴리곤 + 건물 폴리곤 (모양, 층수 태그)
   "outline": "osm/way/000000",
   "buildings": [
     { "osm": "way/000001", "name": "학술정보관", "role": "library", "size": "large", "style": "white" },
-    { "osm": "way/000002", "name": "중생관", "role": "cafeteria", "size": "medium", "style": "brick" },
+    { "osm": "way/000002", "name": "중생관", "role": "lecture", "size": "medium", "style": "brick" },
+    { "osm": null, "name": "학생식당", "role": "cafeteria", "size": "small", "near": "중생관" },
+    { "osm": "way/000004", "name": "학생 기숙사", "realName": "신유관", "role": "dorm", "size": "medium" },
     { "osm": "way/000003", "name": "재림관", "role": "landmark", "model": "landmarks/sungkyul-jaerim.glb" }
   ],
   "tentArea": { "near": "main-gate" },
